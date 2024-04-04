@@ -3,6 +3,7 @@ plugins {
     id 'org.springframework.boot' version '3.2.4'
     id 'io.spring.dependency-management' version '1.1.4'
     id 'checkstyle'
+    id 'org.liquibase.gradle' version '2.2.1'
 }
 
 group = 'ru.zvrg'
@@ -56,6 +57,17 @@ dependencies {
     implementation "com.google.code.gson:gson:${GSON_VERSION}"
     implementation "com.puppycrawl.tools:checkstyle:${CHECKSTYLE_VERSION}"
     implementation "org.liquibase:liquibase-core:${LIQUIBASE_VERSION}"
+}
+
+liquibase {
+    activities {
+        main {
+            changeLogFile "src/main/liquibase/root-changelog.yaml"
+            url "jdbc:postgresql://localhost:5432/mydatabase"
+            username "myuser"
+            password "secret"
+        }
+    }
 }
 
 checkstyle {
