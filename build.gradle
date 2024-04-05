@@ -54,20 +54,39 @@ dependencies {
     implementation 'org.springframework.kafka:spring-kafka'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 
+    //liquibase
+    liquibaseRuntime 'org.liquibase:liquibase-core:3.8.9'
+    liquibaseRuntime("ch.qos.logback:logback-core:1.2.3")
+    liquibaseRuntime("ch.qos.logback:logback-classic:1.2.3")
+    liquibaseRuntime 'org.postgresql:postgresql'
+    liquibaseRuntime 'org.liquibase.ext:liquibase-hibernate5:3.6'
+    liquibaseRuntime 'org.springframework.data:spring-data-jpa'
+    liquibaseRuntime 'org.springframework.boot:spring-boot'
+    liquibaseRuntime sourceSets.main.output
+    liquibaseRuntime 'org.yaml:snakeyaml:1.26'
+
     implementation "org.telegram:telegrambots:${TELEGRAMBOTS_VERSION}"
     implementation "com.google.code.gson:gson:${GSON_VERSION}"
     implementation "com.puppycrawl.tools:checkstyle:${CHECKSTYLE_VERSION}"
     implementation "org.liquibase:liquibase-core:${LIQUIBASE_VERSION}"
 }
 
+ext {
+    database = new Properties().with {
+        load(file("src/main/resources/db.properties").newReader())
+        it
+    }
+}
+
 liquibase {
     activities {
         main {
             changeLogFile "src/main/liquibase/root-changelog.yaml"
-            url "jdbc:postgresql://localhost:5432/mydatabase"
-            username "myuser"
-            password "secret"
+            url database.getProperty("db.url")
+            username database.getProperty("db.user")
+            password database.getProperty("db.password")
         }
+        runList = "main"
     }
 }
 
