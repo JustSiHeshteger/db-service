@@ -52,6 +52,7 @@ dependencies {
 
     implementation 'org.springframework.boot:spring-boot-starter'
     implementation 'org.springframework.kafka:spring-kafka'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 
     implementation "org.telegram:telegrambots:${TELEGRAMBOTS_VERSION}"
     implementation "com.google.code.gson:gson:${GSON_VERSION}"
