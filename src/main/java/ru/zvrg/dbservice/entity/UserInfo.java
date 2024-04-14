@@ -19,7 +19,7 @@ public class UserInfo {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @Column
+    @Column(nullable = false)
     private String name;
 
     @Column

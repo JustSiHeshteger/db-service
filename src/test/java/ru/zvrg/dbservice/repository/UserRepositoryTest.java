@@ -9,6 +9,8 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import ru.zvrg.dbservice.entity.User;
 import ru.zvrg.dbservice.entity.UserInfo;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
@@ -69,10 +71,10 @@ public class UserRepositoryTest {
         assertNotNull(findUser);
         assertTrue(findUser.isPresent());
         assertNotNull(findUser.get().getUserInfo());
-        assertEquals(findUser.get().getUserInfo().getName(), name);
-        assertEquals(findUser.get().getUserInfo().getSecondName(), secondName);
-        assertEquals(findUser.get().getUserInfo().getThirdName(), thirdName);
-        assertEquals(findUser.get().getUserInfo().getNickName(), nickName);
+        assertEquals(name, findUser.get().getUserInfo().getName());
+        assertEquals(secondName, findUser.get().getUserInfo().getSecondName());
+        assertEquals(thirdName, findUser.get().getUserInfo().getThirdName());
+        assertEquals(nickName, findUser.get().getUserInfo().getNickName());
 
         userRepository.deleteByChatId(chatId);
         findUser = userRepository.findByChatId(chatId);
@@ -101,5 +103,36 @@ public class UserRepositoryTest {
         userRepository.deleteByChatId(1L);
         final var findUser = userRepository.findById(1L);
         assertFalse(findUser.isPresent());
+    }
+
+    @Test
+    public void deleteAllUsersTest() {
+        final String nickName = "testNickName";
+        final String name = "testName";
+
+        final User user1 = new User();
+        user1.setChatId(1L);
+
+        final User user2 = new User();
+        user2.setChatId(2L);
+
+        final UserInfo userInfo = new UserInfo();
+        userInfo.setName(name);
+        userInfo.setNickName(nickName);
+
+        user2.setUserInfo(userInfo);
+        userInfo.setUser(user2);
+
+        userRepository.saveAll(List.of(user1, user2));
+        var users = userRepository.findAll();
+
+        assertEquals(2, users.size());
+        assertNotNull(users.get(1).getUserInfo());
+        assertEquals(nickName, users.get(1).getUserInfo().getNickName());
+        assertEquals(name, users.get(1).getUserInfo().getName());
+
+        userRepository.deleteAll();
+        users = userRepository.findAll();
+        assertTrue(users.isEmpty());
     }
 }
