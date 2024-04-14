@@ -3,6 +3,7 @@ package ru.zvrg.dbservice.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import ru.zvrg.dbservice.dto.kafka.Message;
 import ru.zvrg.dbservice.listener.kafka.KafkaProducer;
 import ru.zvrg.dbservice.repository.UserRepository;
 
@@ -17,6 +18,6 @@ public class SchedulerTasks {
 
     @Scheduled(cron = SCHEDULER_TIME)
     public void weatherDistributionByChatId() {
-        System.out.println("5000ms");
+        userRepository.findAll().forEach(user -> kafkaProducer.sendMessage(new Message()));
     }
 }
