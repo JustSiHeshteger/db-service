@@ -8,4 +8,8 @@ public class Constants {
         public static final String BOOSTRAP_SERVER = "localhost:9092";
         public static final String GROUP_ID = "myGroup";
     }
+
+    public static class SchedulerConstants {
+        public static final String SCHEDULER_TIME = "0 0 12,18 * * *";
+    }
 }

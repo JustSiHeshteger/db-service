@@ -7,8 +7,9 @@
     <changeSet id="create-table-users" author="Strigalev Andrey">
         <sql>
             CREATE TABLE IF NOT EXISTS users (
-                 id BIGSERIAL PRIMARY KEY,
-                 chat_id BIGINT NOT NULL
+                id BIGSERIAL PRIMARY KEY,
+                chat_id BIGINT,
+                UNIQUE(chat_id)
             );
         </sql>
     </changeSet>
@@ -17,13 +18,13 @@
         <sql>
             CREATE TABLE IF NOT EXISTS user_info (
                 id BIGSERIAL PRIMARY KEY,
-                user_id BIGINT,
                 name VARCHAR(255) NOT NULL,
                 second_name VARCHAR(255),
                 third_name VARCHAR(255),
                 nick_name VARCHAR(255) NOT NULL,
-                FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
-                );
+                user_id BIGINT NOT NULL,
+                CONSTRAINT fk_user_info_user_id FOREIGN KEY (user_id) REFERENCES users(id)
+            );
         </sql>
     </changeSet>
     

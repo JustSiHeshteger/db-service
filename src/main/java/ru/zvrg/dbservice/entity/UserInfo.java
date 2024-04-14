@@ -2,23 +2,24 @@ package ru.zvrg.dbservice.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 @Data
 @Entity
 @NoArgsConstructor
 @Table(name = "user_info")
-@ToString(callSuper = true)
-@EqualsAndHashCode(callSuper = true)
-public class UserInfo extends BaseEntity {
+public class UserInfo {
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @Id
+    @Column
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @OneToOne
     @JoinColumn(name = "user_id")
     private User user;
 
-    @Column(nullable = false)
+    @Column
     private String name;
 
     @Column
