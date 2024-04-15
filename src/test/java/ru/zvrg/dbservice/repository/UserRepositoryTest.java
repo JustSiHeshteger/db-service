@@ -63,8 +63,6 @@ public class UserRepositoryTest {
         user.setChatId(chatId);
         user.setUserInfo(userInfo);
 
-        userInfo.setUser(user);
-
         userRepository.save(user);
 
         var findUser = userRepository.findByChatId(chatId);
@@ -110,18 +108,16 @@ public class UserRepositoryTest {
         final String nickName = "testNickName";
         final String name = "testName";
 
+        final UserInfo userInfo = new UserInfo();
+        userInfo.setName(name);
+        userInfo.setNickName(nickName);
+
         final User user1 = new User();
         user1.setChatId(1L);
 
         final User user2 = new User();
         user2.setChatId(2L);
-
-        final UserInfo userInfo = new UserInfo();
-        userInfo.setName(name);
-        userInfo.setNickName(nickName);
-
         user2.setUserInfo(userInfo);
-        userInfo.setUser(user2);
 
         userRepository.saveAll(List.of(user1, user2));
         var users = userRepository.findAll();

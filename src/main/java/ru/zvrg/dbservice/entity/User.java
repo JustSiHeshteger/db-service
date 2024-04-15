@@ -18,6 +18,7 @@ public class User {
     @Column(name = "chat_id", unique = true)
     private Long chatId;
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_info_id", referencedColumnName = "id")
     private UserInfo userInfo;
 }

@@ -3,27 +3,27 @@
                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd">
-    
-    <changeSet id="create-table-users" author="Strigalev Andrey">
-        <sql>
-            CREATE TABLE IF NOT EXISTS users (
-                id BIGSERIAL PRIMARY KEY,
-                chat_id BIGINT,
-                UNIQUE(chat_id)
-            );
-        </sql>
-    </changeSet>
 
     <changeSet id="create-table-user-info" author="Strigalev Andrey">
         <sql>
             CREATE TABLE IF NOT EXISTS user_info (
-                id BIGSERIAL PRIMARY KEY,
+                id SERIAL PRIMARY KEY,
+                user_id BIGINT UNIQUE,
                 name VARCHAR(255) NOT NULL,
                 second_name VARCHAR(255),
                 third_name VARCHAR(255),
-                nick_name VARCHAR(255) NOT NULL,
-                user_id BIGINT NOT NULL,
-                CONSTRAINT fk_user_info_user_id FOREIGN KEY (user_id) REFERENCES users(id)
+                nick_name VARCHAR(255) NOT NULL
+                );
+        </sql>
+    </changeSet>
+
+    <changeSet id="create-table-users" author="Strigalev Andrey">
+        <sql>
+            CREATE TABLE IF NOT EXISTS users (
+                id SERIAL PRIMARY KEY,
+                chat_id BIGINT UNIQUE,
+                user_info_id BIGINT,
+                CONSTRAINT fk_user_info FOREIGN KEY (user_info_id) REFERENCES user_info(id)
             );
         </sql>
     </changeSet>
